@@ -58,7 +58,7 @@
       # the website.
       jupyterEnv = pkgs.mkShell rec {
         name = packageName "jupyter-environment";        
-        buildInputs = [ (pkgs.python39.withPackages (ps: with ps; [ ipython jupyter numpy pandas matplotlib plotly statsmodels ])) cadCAD ];
+        buildInputs = [ (pkgs.python39.withPackages (ps: with ps; [ ipython jupyter numpy pandas matplotlib plotly statsmodels seaborn src])) cadCAD ];
         src =  nix-filter {
           root = commonArgs.root; 
           exclude = commonFilters.markdownFiles;
