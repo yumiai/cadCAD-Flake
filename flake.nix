@@ -44,13 +44,10 @@
       cadCAD = with pkgs; with python39Packages; buildPythonPackage rec {
         pname = "cadCAD";
         version = "0.4.23";
-        src = nix-filter {
-          root = fetchurl {
+        src = fetchurl {
             url = "https://files.pythonhosted.org/packages/8b/ea/39cf41e5b515027cfff44940e8e95f993ca74d8bafacbe0c7f25fc0c5905/cadCAD-0.4.23.tar.gz";
             sha256 = "6c9fcc2cff34e0eae00f33ec3291f8ffc7452c8621c0aa6d900d1dfe2acd1625";
             };
-          exclude = markdownFiles ++ nixFiles;
-        };
 
         propagatedBuildInputs = [ ppft multiprocess pox dill pathos pytz pandas funcy fn ];
         doCheck = false;
