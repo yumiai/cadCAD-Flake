@@ -8,5 +8,5 @@ legacy commands are supported such as nix-shell and nix-build which also work al
 To run an environment with Jupyter run this:
 
 ```bash
-nix develop github:yumiai/cadCAD-Flake -- jupyter notebook
+nix develop github:yumiai/cadCAD-Flake -c jupyter notebook
 ```

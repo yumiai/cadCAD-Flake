@@ -54,7 +54,7 @@
 
         propagatedBuildInputs = [ ppft multiprocess pox dill pathos pytz pandas funcy fn ];
         doCheck = false;
-        
+
       };
 
       # Build all the Hugo website dependencies and make them available for development of
@@ -64,7 +64,7 @@
         buildInputs = [ (pkgs.python39.withPackages (ps: with ps; [ ipython jupyter numpy pandas matplotlib plotly statsmodels ])) cadCAD ];
         src =  nix-filter {
           root = commonArgs.root; 
-          exclude = commonFilters.readmeFiles;
+          exclude = commonFilters.markdownFiles;
         };
         shellHook = ''
         export PS1="\u@\H ~ "
