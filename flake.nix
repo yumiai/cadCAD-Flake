@@ -57,17 +57,17 @@
 
       # Create a standard jupyter envioronment with the following packages 
       # the website.
-      jupyterEnv = pkgs.mkShell rec {
-        name = packageName "jupyter-environment";        
-        buildInputs = [(pkgs.python3.withPackages (ps: with ps; [ ipython jupyter numpy pandas]))];
-        src =  nix-filter {
-          root = commonArgs.root; 
-          exclude = commonFilters.markdownFiles;
-        };
-        shellHook = ''
-        export PS1="\u@\H ~ "
-        '';
-      };
+      # jupyterEnv = pkgs.mkShell rec {
+      #   name = packageName "jupyter-environment";        
+      #   buildInputs = [(pkgs.python3.withPackages (ps: with ps; [ ipython jupyter numpy pandas]))];
+      #   src =  nix-filter {
+      #     root = commonArgs.root; 
+      #     exclude = commonFilters.markdownFiles;
+      #   };
+      #   shellHook = ''
+      #   export PS1="\u@\H ~ "
+      #   '';
+      # };
       # A second devshell to call on with cadCAD in scope
       CadEnv = pkgs.mkShell rec {
         name = packageName "jupyter-environment";        
@@ -78,12 +78,12 @@
                                                   numpy
                                                   pandas
                                                   matplotlib
+                                                  ]))
                                                   cadCAD
-                                                  ]))  
                                                   ];
         src =  nix-filter {
           root = commonArgs.root; 
-          exclude = commonFilters.markdownFiles;
+          exclude = commonFilters.markdownFiles ++ commonFilters.nixFiles;
         };
         shellHook = ''
         export PS1="\u@\H ~ "
@@ -92,13 +92,12 @@
 
     in 
     {
-      packages = rec {
-        nixCad = cadCAD;
-        default = nixCad;
+      packages = {
+        default = cadCAD;
       };
+
       devShells = {
-        default = jupyterEnv;
-        cadenv = CadEnv;
-      };
+        default = CadEnv;
+        };
     });
   }
