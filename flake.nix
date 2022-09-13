@@ -41,7 +41,7 @@
       # Use a standard way of naming derivations package names.
       packageName = suffix: commonArgs.name + "-" + suffix;
       
-      cadCAD = with pkgs; with python39Packages; buildPythonPackage rec {
+      cadCAD = with pkgs; with python3Packages; buildPythonPackage rec {
         pname = "cadCAD";
         version = "0.4.23";
         src = fetchurl {
@@ -58,7 +58,7 @@
       # the website.
       jupyterEnv = pkgs.mkShell rec {
         name = packageName "jupyter-environment";        
-        buildInputs = [ (pkgs.python39.withPackages (ps: with ps; [ ipython jupyter numpy pandas matplotlib plotly statsmodels seaborn src])) cadCAD ];
+        buildInputs = [ (pkgs.python37.withPackages (ps: with ps; [ ipython jupyter numpy pandas matplotlib plotly statsmodels seaborn src])) cadCAD ];
         src =  nix-filter {
           root = commonArgs.root; 
           exclude = commonFilters.markdownFiles;
