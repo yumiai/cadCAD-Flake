@@ -1,0 +1,4 @@
+src
+*.ipynb
+.ipynb_checkpoints
+.DStore
