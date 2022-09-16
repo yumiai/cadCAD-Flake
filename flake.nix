@@ -49,7 +49,6 @@
             inherit pname version;
             sha256 = "6c9fcc2cff34e0eae00f33ec3291f8ffc7452c8621c0aa6d900d1dfe2acd1625";
             };
-
         propagatedBuildInputs = [ ppft multiprocess pox dill pathos pytz pandas funcy fn ];
         doCheck = false;
 
@@ -62,6 +61,7 @@
                                                   ipython 
                                                   jupyter
                                                   seaborn
+                                                  plotly
                                                   numpy
                                                   pandas
                                                   matplotlib
