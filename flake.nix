@@ -12,7 +12,7 @@
   };
 
   outputs = inputs@{ self, nixpkgs, flake-utils, flake-compat, ... }:
-    flake-utils.lib.eachDefaultSystem  ( system:
+    flake-utils.lib.eachDefaultSystem  ( system: 
     let
       pkgs = import nixpkgs { inherit system; };
       inherit (pkgs) lib stdenv;
@@ -42,7 +42,7 @@
       packageName = suffix: commonArgs.name + "-" + suffix;
       
       # build cadCAD by pulling down the pypi package
-      cadCAD = with pkgs; with python3Packages; buildPythonPackage rec {
+      cadCAD = with pkgs; with python37; buildPythonPackage rec {
         pname = "cadCAD";
         version = "0.4.23";
         src = fetchPypi {
@@ -53,38 +53,32 @@
         doCheck = false;
 
       };
+      # TODO: fix cadCAD build with lower versions of python.
+      # ipython37 = with pkgs; with python37; buildPythonPackage rec {
+      #   pname = "ipython";
+      #   version = "7.3.1";
+      #   src = fetchPypi {
+      #       inherit pname version;
+      #       sha256 = "cb6aef731bf708a7727ab6cde8df87f0281b1427d41e65d62d4b68934fa54e97";
+      #       };
+      #   doCheck = false;
 
-      # A second devshell to call on with cadCAD in scope
-      jupEnv = pkgs.mkShell rec {
-        name = packageName "jupyter-environment";        
-        buildInputs = [(pkgs.python3.withPackages (ps: with ps; [ 
-                                                  ipython 
-                                                  jupyter
-                                                  seaborn
-                                                  plotly
-                                                  numpy
-                                                  pandas
-                                                  matplotlib
-                                                  ]))
-                                                  cadCAD
-                                                  ];
-        src =  nix-filter {
-          root = commonArgs.root; 
-          exclude = commonFilters.markdownFiles ++ commonFilters.nixFiles;
-        };
-        shellHook = ''
-        export PS1="\u@\H ~ "
-        '';
-      };
+      # };
 
     in 
     {
-      packages = {
-        default = cadCAD;
-      };
-
       devShells = {
-        default = jupEnv;
+        default = pkgs.mkShell rec { 
+          name = packageName "jupyter-environment";        
+          buildInputs = [ pkgs.python37.withPackages (ps: with ps; [ ipython jupyter] ) ];
+          src =  nix-filter {
+            root = commonArgs.root; 
+            exclude = commonFilters.markdownFiles ++ commonFilters.nixFiles;
+          };
+          shellHook = ''
+            export PS1="\u@\H ~ "
+          '';
+          };
         };
     });
   }
