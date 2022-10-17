@@ -42,19 +42,19 @@
       packageName = suffix: commonArgs.name + "-" + suffix;
       
       # build cadCAD by pulling down the pypi package
-      cadCAD = with pkgs; with python37; buildPythonPackage rec {
+      cadCAD = with pkgs; with python39; buildPythonPackage rec {
         pname = "cadCAD";
-        version = "0.4.23";
+        version = "0.4.28";
         src = fetchPypi {
             inherit pname version;
-            sha256 = "6c9fcc2cff34e0eae00f33ec3291f8ffc7452c8621c0aa6d900d1dfe2acd1625";
+            sha256 = "a411f124977219d1f765164544fef0cab92601e895d687706516b8dd2d5f367f";
             };
         propagatedBuildInputs = [ ppft multiprocess pox dill pathos pytz pandas funcy fn ];
         doCheck = false;
 
       };
       # TODO: fix cadCAD build with lower versions of python.
-      # ipython37 = with pkgs; with python37; buildPythonPackage rec {
+      # ipython37 = with pkgs; with python39; buildPythonPackage rec {
       #   pname = "ipython";
       #   version = "7.3.1";
       #   src = fetchPypi {
@@ -70,7 +70,7 @@
       devShells = {
         default = pkgs.mkShell rec { 
           name = packageName "jupyter-environment";        
-          buildInputs = [ pkgs.python37.withPackages (ps: with ps; [ ipython jupyter] ) ];
+          buildInputs = [ pkgs.python39.withPackages (ps: with ps; [ ipython jupyter] ) ];
           src =  nix-filter {
             root = commonArgs.root; 
             exclude = commonFilters.markdownFiles ++ commonFilters.nixFiles;
